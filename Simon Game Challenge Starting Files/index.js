@@ -17,18 +17,18 @@ $(".btn").click(function(event){
     if(play){
         var userChosenColour = event.target.id
         userClickedPattern.push(userChosenColour);
-        animaSound(userChosenColour);
         console.log(userClickedPattern);
-        comprobarPatron();
+        comprobarPatron(userChosenColour);
     }
 })
 
 
 
-function comprobarPatron(){
+function comprobarPatron(userChosenColour){
     var indice = userClickedPattern.length - 1;
-    if (userClickedPattern[indice] === gamePattern[indice]){
-        if(gamePattern.length === userClickedPattern.length){
+    if (userChosenColour === gamePattern[indice]){
+        animaSound(userChosenColour);
+        if(gamePattern.length === userClickedPattern.length){    
             setTimeout(function () {
               nextSequence();
             }, 1000);
@@ -36,7 +36,6 @@ function comprobarPatron(){
     }else{
         gameOver();
         $("#level-title").text("Press A Key to Start");
-        play = false;
     }
 
 }
@@ -66,9 +65,11 @@ function animatePress(currentColour){
 
 }
 function gameOver(){
+    play = false;
     level = 0;
     gamePattern = [];
-    $("body").addClass("game-over").delay(100).queue(function(next){
+    animaSound("wrong");
+    $("body").addClass("game-over").delay(200).queue(function(next){
         $(this).removeClass("game-over");
         next();
     })
